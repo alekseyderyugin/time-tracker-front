@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  app:
+    env_file:
+      - .env
+    build:
+      context: .
+      args:
+        useruid: ${UID}
+    volumes:
+      - ./app/:/app:cached
+    networks:
+      - front
+    ports:
+      - ${APP_PORT}:5173
+  api:
+    env_file:
+      - .env
+    build:
+      context: ./api
+      args:
+        useruid: ${UID}
+    networks:
+      - front
+    ports:
+      - ${API_PORT}:5173
+
+networks:
+  front:
+    driver: bridge
+    ipam:
+      driver: default
+  backend:
