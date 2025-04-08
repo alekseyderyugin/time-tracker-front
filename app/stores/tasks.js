@@ -1,8 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, reactive, ref} from "vue";
-/*
-import axios from "axios";
-*/
+import {useFetch} from "#app";
 
 export const useTasksStore = defineStore('tasks', () => {
     const currentTask = reactive({
@@ -10,6 +8,8 @@ export const useTasksStore = defineStore('tasks', () => {
         start: {},
         seconds: 0
     });
+
+    const API_BASE_URI = 'http://0.0.0.0:5175'
 
     const today = ref(null)
     const weekTotal = ref(null)
@@ -23,7 +23,7 @@ export const useTasksStore = defineStore('tasks', () => {
     const tasks = ref([]);
 
     const getTasks = async () => {
-        tasks.value = await $fetch('http://0.0.0.0:5175/tasks')
+        tasks.value = await $fetch(API_BASE_URI + '/tasks')
     }
 
     const tasksByDay = computed(() => {
@@ -60,18 +60,20 @@ export const useTasksStore = defineStore('tasks', () => {
         return grouped;
     })
 
-    function saveInterval() {
-
+    async function saveTask() {
         const newTask = {
             name: currentTask.name,
             start: currentTask.start,
             seconds: currentTask.seconds,
         }
 
+        const { data: responseData } = await useFetch(API_BASE_URI + '/tasks', {
+            method: 'post',
+            body: newTask
+        })
+
+        newTask.id = responseData.value.id
         tasks.value.push(newTask)
-
-        console.log(newTask)
-
         clear();
     }
 
@@ -83,6 +85,6 @@ export const useTasksStore = defineStore('tasks', () => {
     }
 
     return {
-        saveInterval, tasks, currentTask, timerFormattedTime, tasksByDay, tasksDaysSumSeconds, getTasks
+        saveTask, tasks, currentTask, timerFormattedTime, tasksByDay, tasksDaysSumSeconds, getTasks
     }
 });

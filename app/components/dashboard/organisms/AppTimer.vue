@@ -83,7 +83,7 @@ const stopTimer = () => {
     }
 
     timerStarted.value = false
-    tasks.saveInterval()
+    tasks.saveTask()
 };
 
 const warn = ref(false)

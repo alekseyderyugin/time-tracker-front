@@ -76,7 +76,7 @@ const stopTimer = () => {
     }
 
     timerStarted.value = false
-    tasks.saveInterval()
+    tasks.saveTask()
 };
 
 const warn = ref(false)
@@ -137,9 +137,4 @@ async function warnNoTask() {
         transform: translate3d(3px, 0, 0);
     }
 }
-
-/*.task-input:focus {
-    box-shadow: none;
-    color: #2e2e2e;
-}*/
 </style>
