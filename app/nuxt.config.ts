@@ -4,8 +4,8 @@ import svgLoader from 'vite-svg-loader';
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: {enabled: true},
+    css: ['~/assets/main.scss'],
     modules: [
-        'usebootstrap',
         'nuxt-svgo',
         '@hypernym/nuxt-gsap',
         '@pinia/nuxt'
@@ -44,5 +44,11 @@ export default defineNuxtConfig({
                 prefetchOn: { visibility: true }*/
             }
         }
+    },
+    extends: [
+        "./domain/tracker/core",
+    ],
+    typescript: {
+        typeCheck: true
     }
 })
