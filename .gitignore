@@ -3,3 +3,4 @@ app/.vscode
 .env
 tmp/
 .env.bak
+.idea
