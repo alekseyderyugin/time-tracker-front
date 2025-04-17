@@ -6,9 +6,11 @@ export default defineNuxtConfig({
     devtools: {enabled: true},
     css: ['~/assets/main.scss'],
     modules: [
-        'nuxt-svgo',
-        '@hypernym/nuxt-gsap',
-        '@pinia/nuxt'
+      'nuxt-svgo',
+      '@hypernym/nuxt-gsap',
+      '@pinia/nuxt',
+      '@nuxtjs/eslint-module',
+      '@nuxt/eslint'
     ],
     imports: {
         autoImport: false
