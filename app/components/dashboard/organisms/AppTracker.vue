@@ -29,7 +29,7 @@ import {nextTick, ref, useTemplateRef} from "vue";
 /*
 import { useGsap } from '#gsap'
 */
-import {useTasksStore} from "~/stores/tasks.js";
+import {useTasksStore} from "~/domain/tracker/core/stores/tasks.ts";
 import StartStopControl from "~/components/dashboard/organisms/StartStopControl.vue";
 const editTaskTitle = ref(true);
 const tasks = useTasksStore();

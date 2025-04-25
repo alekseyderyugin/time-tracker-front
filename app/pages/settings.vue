@@ -12,8 +12,8 @@
                         <div class="col-sm-4">
                             <label for="currency-select">Валюта</label>
                             <select v-model="settings.currency" class="form-control" id="currency-select">
-                                <option value="rub" selected>₽ (рубль)</option>
-                                <option value="usd">$ (доллар)</option>
+                                <option value="rub" selected><currency-icon currency="rub"/> (рубль)</option>
+                                <option value="usd"><currency-icon currency="usd"/> (доллар)</option>
                             </select>
                             <small id="currentHelp" class="form-text text-muted">Валюта расчёта для новых задач.</small>
                         </div>
@@ -35,6 +35,7 @@
 import {useSettingsStore} from "~/stores/settings.js";
 import AppAlert from "~/components/dashboard/molecules/AppAlert.vue";
 import {onMounted} from "vue";
+import CurrencyIcon from "~/components/dashboard/atoms/CurrencyIcon.vue";
 
 const settings = useSettingsStore()
 
