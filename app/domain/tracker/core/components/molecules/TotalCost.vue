@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import CurrencyIcon from "~/components/dashboard/atoms/CurrencyIcon.vue";
+import CurrencyIcon from "~/domain/core/atoms/CurrencyIcon.vue";
 
 const props = defineProps({
     total: {

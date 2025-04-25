@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import AppTracker from '~/components/dashboard/organisms/AppTracker.vue';
+import AppTracker from '~/domain/tracker/core/components/organisms/AppTracker.vue';
 import TasksHistory from '~/domain/tracker/history/components/TasksHistory.vue';
 </script>
 

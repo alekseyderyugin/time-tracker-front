@@ -2,7 +2,7 @@
 
 import {useTasksStore} from "~/domain/tracker/core/stores/tasks";
 import {onMounted, ref} from "vue";
-import TotalCost from "~/components/dashboard/molecules/TotalCost.vue";
+import TotalCost from "~/domain/tracker/core/components/molecules/TotalCost.vue";
 
 const tasks = useTasksStore()
 

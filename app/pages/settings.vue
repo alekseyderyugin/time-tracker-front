@@ -33,9 +33,9 @@
 <script setup>
 
 import {useSettingsStore} from "~/stores/settings.js";
-import AppAlert from "~/components/dashboard/molecules/AppAlert.vue";
+import AppAlert from "~/domain/core/molecules/AppAlert.vue";
 import {onMounted} from "vue";
-import CurrencyIcon from "~/components/dashboard/atoms/CurrencyIcon.vue";
+import CurrencyIcon from "~/domain/core/atoms/CurrencyIcon.vue";
 
 const settings = useSettingsStore()
 
