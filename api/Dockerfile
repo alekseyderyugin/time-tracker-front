@@ -21,8 +21,7 @@ RUN mkdir -p /app && chown -R $USERNAME:$USERNAME /app
 RUN adduser $USERNAME wheel
 RUN echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
-RUN npm install -g json-server
-
+RUN npm install -g json-server@0.17.4
 
 USER $USERNAME
 
