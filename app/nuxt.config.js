@@ -9,8 +9,8 @@ export default defineNuxtConfig({
       'nuxt-svgo',
       '@hypernym/nuxt-gsap',
       '@pinia/nuxt',
-      '@nuxtjs/eslint-module',
-      '@nuxt/eslint'
+      //'@nuxtjs/eslint-module',
+      //'@nuxt/eslint'
     ],
     imports: {
         autoImport: false
@@ -50,7 +50,4 @@ export default defineNuxtConfig({
     extends: [
         "./domain/tracker/core",
     ],
-    typescript: {
-        typeCheck: true
-    }
 })

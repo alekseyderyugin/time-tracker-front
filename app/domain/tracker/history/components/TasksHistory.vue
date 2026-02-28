@@ -57,6 +57,7 @@ onMounted(() => {
                             v-for="(total, currency) in tasks.currencyTotalByDay[date]"
                             :key="currency"
                         >
+                            {{tasks.currencyTotalByDay[date].length}}
                             <total-cost
                                 :currency="currency"
                                 :total="total"

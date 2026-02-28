@@ -1,154 +1,89 @@
 <template>
-    <div class="d-flex bd-highlight">
-        <div class="col-md-4 ps-2" >
-            <span class="block-title" :class="{'filled': tasks.currentTask.name}" v-show="!editTaskTitle" @click="onTaskTitleClick">
-                {{tasks.currentTask.name ? tasks.currentTask.name : 'What are you working on?'}}
-            </span>
-            <input
-                v-show="editTaskTitle"
-                v-model="tasks.currentTask.name"
-                ref="task-input"
-                @blur="disableEditTaskTitle"
-                class="form-control form-control-lg task-input"
-                :class="{'shake': warn}"
-                type="text"
-            >
+    <section v-if="tracker.currentTask" class="timer-running">
+        <div class="timer-running-content">
+            <div class="timer-running-info">
+                <div class="timer-running-task">{{tracker.currentTask.title}}</div>
+                <div class="timer-running-meta">
+                    <span class="timer-pulse"></span>
+                    <span class="timer-running-time">{{defaultFormat(ticker.seconds.value)}}</span>
+                    <a v-if="tracker.currentTask.project" href="#" class="project-badge">
+                        <AppProjectDot :color="tracker.currentTask.project.color"></AppProjectDot>
+                        <span>{{tracker.currentTask.project.title}}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="timer-running-actions">
+                <button @click="stopTimer" class="btn-stop">Стоп</button>
+            </div>
         </div>
-        <div class="col-md-4 d-flex justify-content-end align-items-center pe-5">
-            <span class="block-title" :class="{'filled': timerStarted}">{{ formattedTime() }}</span>
+    </section>
 
-            <start-stop-control
-                @started="startTimer($event)"
-                @stopped="stopTimer"
-                class="timer-control-button me-2"
-            />
+    <section v-if="!tracker.currentTask" class="timer-section">
+        <div class="task-input-row">
+            <input type="text" class="task-input" v-model="tracker.newTask.title" placeholder="Над чем вы работаете?">
+
+
+            <div @click="displayProjectDropdown = !displayProjectDropdown" class="project-select" id="projectSelect" title="Выбрать проект">
+                <svg class="project-select-icon" viewBox="0 0 24 24">
+                    <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"></path>
+                </svg>
+                <span v-if="tracker.newTask.projectId" class="project-select-dot" :style="{
+                    background: projects.getAccentColorById(tracker.newTask.projectId)
+                }"></span>
+
+                <div v-if="displayProjectDropdown" class="project-dropdown" id="projectDropdown">
+                    <div v-for="(project, index) in projects.getProjects().value"
+                         :key="project.id"
+                         class="project-dropdown-item"
+                         @click.stop="selectProject(project.id)"
+                    >
+                        <span class="project-dropdown-dot" :style="`background: ${project.accentColor}`"></span>
+                        <span class="project-dropdown-name">{{project.name}}</span>
+                    </div>
+                </div>
+            </div>
+            <button @click="startTimer" class="btn-start pulsing">Старт</button>
         </div>
-    </div>
+    </section>
 </template>
 
 <script setup>
-import {nextTick, ref, useTemplateRef} from "vue";
-/*
-import { useGsap } from '#gsap'
-*/
-import {useTasksStore} from "~/domain/tracker/core/stores/tasks.ts";
-import StartStopControl from "~/components/dashboard/molecules/StartStopControl.vue";
-const editTaskTitle = ref(false);
-const tasks = useTasksStore();
+import useTicker from "../../use/useTicker.js";
+import {useTrackerStore} from "../../stores/tracker.js";
+import {defaultFormat} from "../../use/useTimeFormatter.js";
+import {useProjectsStore} from "../../stores/projects.js";
+import {ref} from "vue";
+import AppProjectDot from "./AppProjectDot.vue";
 
-
-async function onTaskTitleClick() {
-    editTaskTitle.value = true
-    await nextTick();
-    taskInput.value.focus()
-}
-
-function disableEditTaskTitle() {
-    editTaskTitle.value = false
-}
-
-const taskInput = useTemplateRef('task-input')
-
-let ticker = null;
-const timerStarted = ref(false)
-const formattedTime = () => {
-    return tasks.timerFormattedTime(tasks.currentTask.seconds)
-};
-
+const ticker = useTicker()
+const tracker = useTrackerStore()
 const startTimer = (event) => {
-
-    if (!tasks.currentTask.name) {
-        warnNoTask()
-        event.stopImmediatePropagation()
-        return;
-    }
-
-    if (ticker) return; // Уже идет
-
-    timerStarted.value = true
-
-    const startTime = Date.now() - tasks.currentTask.seconds * 1000; // Учитываем прошедшее время
-
-    ticker = setInterval(() => {
-        tasks.currentTask.seconds = Math.floor((Date.now() - startTime) / 1000);
-    }, 1000)
-
-    tasks.currentTask.start = startTime;
+    tracker.create().then((task) => {
+        ticker.start(task.createdAt)
+    })
 };
 
 const stopTimer = () => {
-    if (ticker) {
-        clearInterval(ticker)
-        ticker = null
-    }
-
-    timerStarted.value = false
-    tasks.saveTask()
+    ticker.stop()
+    tracker.finish()
 };
 
-const warn = ref(false)
+const projects = useProjectsStore();
 
-async function warnNoTask() {
-    await onTaskTitleClick()
-    warn.value = true
-    setTimeout(() => {
-        warn.value = false
-    }, 1500)
+const displayProjectDropdown = ref(false)
+
+
+const selectProject = (projectId) => {
+    tracker.newTask.projectId = projectId
+
+    displayProjectDropdown.value = false
 }
+
+
+
 </script>
 
 
 
 <style scoped>
-    .task-input {
-        font-weight: 600;
-        border: none;
-    }
-
-    .block-title {
-        font-size: 14px;
-        line-height: 1.6;
-        font-weight: 600;
-        color: #505050;
-        padding: 10px;
-        display: block;
-        cursor: pointer;
-    }
-
-    .filled {
-        color: #6c6c6c;
-    }
-
-    .shake {
-        animation: shake 0.62s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-        transform: translate3d(0, 0, 0);
-    }
-
-    @keyframes shake {
-        10%,
-        90% {
-            transform: translate3d(-1px, 0, 0);
-        }
-
-        20%,
-        80% {
-            transform: translate3d(2px, 0, 0);
-        }
-
-        30%,
-        50%,
-        70% {
-            transform: translate3d(-3px, 0, 0);
-        }
-
-        40%,
-        60% {
-            transform: translate3d(3px, 0, 0);
-        }
-    }
-
-    .task-input:focus {
-        box-shadow: none;
-        color: #2e2e2e;
-    }
 </style>
