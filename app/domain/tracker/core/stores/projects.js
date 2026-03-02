@@ -23,17 +23,11 @@ export const useProjectsStore = defineStore('projects', () => {
         return projects;
     }
 
-    const getAccentColorById = (id) => {
-        for (const project of projects.value) {
-            if (project.id === id) {
-                return project.accentColor;
-            }
-        }
-
-        return '#ffffff'
+    const getById = (id) => {
+        return projects.value.filter((project) => project.id == id )[0]
     }
 
     return {
-        getProjects, getAccentColorById
+        getProjects, getById
     }
 })

@@ -8,6 +8,8 @@ export const useTrackerStore = defineStore('tracker', () => {
     const createEmptyTask = () => ({
         title: '',
         projectId: '',
+        projectName: '',
+        projectColor: ''
     })
 
     const newTask = reactive(createEmptyTask())
