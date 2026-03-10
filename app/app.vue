@@ -46,6 +46,19 @@
     <aside class="sidebar" id="sidebar">
         <div class="logo">TimeTracker</div>
         <nav>
+            <NuxtLink class="menu-item" activeClass="active" to="/tracker">
+                <TrackerIcon/>
+                <span>Трекер</span>
+            </NuxtLink>
+            <NuxtLink class="menu-item" activeClass="active" to="/projects">
+                <TrackerIcon/>
+                <span>Проекты</span>
+            </NuxtLink>
+<!--            <a href="#" class="menu-item" :class="['menu-item', {'active': props.active}]">
+                <slot name="icon"></slot>
+                <span></span>
+            </a>
+
             <NavMenuItem :active="true">
                 <slot name="icon"><TrackerIcon/></slot>
                 <slot>Трекер</slot>
@@ -53,7 +66,7 @@
             <NavMenuItem>
                 <slot name="icon"><TrackerIcon/></slot>
                 <slot>Проекты</slot>
-            </NavMenuItem>
+            </NavMenuItem>-->
         </nav>
     </aside>
 
@@ -66,10 +79,11 @@
 </template>
 
 <script setup>
-import {useHead} from "nuxt/app";
+import {useHead, useRouter} from "nuxt/app";
 import NavMenuItem from "./domain/tracker/core/components/atoms/NavMenuItem.vue";
 import TrackerIcon from "./domain/core/atoms/Icons/TrackerIcon.vue";
 
+const router = useRouter()
 useHead({
     script: [
         { src: '/assets/bootstrap/bootstrap.bundle.min.js', defer: true }
