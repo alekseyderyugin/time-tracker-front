@@ -11,11 +11,64 @@
     </head>
     <body></body>
     </html>-->
-    <NuxtPage />
+    <!-- Top Navigation Bar (Mobile/Tablet) -->
+    <div class="top-navbar">
+        <div class="top-navbar-left">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="top-navbar-brand">TimeTracker</div>
+        </div>
+        <div class="top-navbar">
+            <div class="top-navbar-left">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                <div class="top-navbar-brand">TimeTracker</div>
+            </div>
+        </div></div>
+
+    <!-- Desktop Toggle -->
+    <button class="desktop-toggle sidebar-visible" id="desktopToggle">☰</button>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">TimeTracker</div>
+        <nav>
+            <NavMenuItem :active="true">
+                <slot name="icon"><TrackerIcon/></slot>
+                <slot>Трекер</slot>
+            </NavMenuItem>
+            <NavMenuItem>
+                <slot name="icon"><TrackerIcon/></slot>
+                <slot>Проекты</slot>
+            </NavMenuItem>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper" id="mainWrapper">
+        <div class="content-container">
+            <NuxtPage />
+        </div>
+    </main>
+
 </template>
 
 <script setup>
 import {useHead} from "nuxt/app";
+import NavMenuItem from "./domain/tracker/core/components/atoms/NavMenuItem.vue";
+import TrackerIcon from "./domain/core/atoms/Icons/TrackerIcon.vue";
 
 useHead({
     script: [
