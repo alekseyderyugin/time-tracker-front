@@ -1,3 +1,16 @@
+<script setup>
+import ContentBlock from "../molecules/ContentBlock.vue";
+import {onMounted} from "vue";
+import {useTasksHistory} from "../../stores/tasksHistory.js";
+import TaskItem from "./TaskItem.vue";
+
+const history = useTasksHistory()
+
+onMounted(() => {
+    history.load()
+})
+</script>
+
 <template>
     <ContentBlock class="history-section">
         <div class="history-header">
@@ -5,204 +18,11 @@
             <button class="delete-selected-btn" id="deleteSelectedBtn">Удалить выбранные</button>
         </div>
 
-        <div class="task-item">
-            <input type="checkbox" class="task-checkbox">
-            <div class="task-info">
-                <div class="task-name-wrapper">
-                            <span class="task-group-icon expanded" onclick="toggleGroup(this)">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M7 10l5 5 5-5z"></path>
-                                </svg>
-                            </span>
-                    <div style="flex: 1;">
-                        <div class="task-name">Разработка интерфейса <span class="task-group-count">3</span></div>
-                        <div class="task-name-edit">
-                            <input type="text" value="Разработка интерфейса">
-                            <div class="task-name-edit-actions">
-                                <button class="btn-save" onclick="saveTaskEdit(this)">✓</button>
-                                <button class="btn-cancel" onclick="cancelTaskEdit(this)">✕</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="task-meta">
-                    <span class="task-date">Сегодня, 14:30 - 17:20</span>
-                    <a href="#" class="project-badge">
-                        <span class="project-dot" style="background: #1976d2;"></span>
-                        <span>Веб-приложение</span>
-                    </a>
-                </div>
-            </div>
-            <div class="task-metrics">
-                <span class="task-time">6:45:30</span>
-                <span class="task-cost">$202.65</span>
-                <button class="continue-btn">Продолжить</button>
-                <button class="edit-task-btn" onclick="editTask(this)">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                    </svg>
-                </button>
-                <button class="delete-task-btn">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="task-group-children visible" id="group-1">
-            <div class="task-item task-group-child">
-                <input type="checkbox" class="task-checkbox">
-                <div class="task-info">
-                    <div class="task-name">Разработка интерфейса</div>
-                    <div class="task-meta">
-                        <span class="task-date">Сегодня, 14:30 - 16:15</span>
-                    </div>
-                </div>
-                <div class="task-metrics">
-                    <span class="task-time">2:15:30</span>
-                    <span class="task-cost">$67.75</span>
-                    <button class="continue-btn">Продолжить</button>
-                    <button class="delete-task-btn">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="task-item task-group-child">
-                <input type="checkbox" class="task-checkbox">
-                <div class="task-info">
-                    <div class="task-name">Разработка интерфейса</div>
-                    <div class="task-meta">
-                        <span class="task-date">Сегодня, 16:20 - 17:00</span>
-                    </div>
-                </div>
-                <div class="task-metrics">
-                    <span class="task-time">1:40:00</span>
-                    <span class="task-cost">$50.00</span>
-                    <button class="continue-btn">Продолжить</button>
-                    <button class="delete-task-btn">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="task-item task-group-child">
-                <input type="checkbox" class="task-checkbox">
-                <div class="task-info">
-                    <div class="task-name">Разработка интерфейса</div>
-                    <div class="task-meta">
-                        <span class="task-date">Сегодня, 17:05 - 17:20</span>
-                    </div>
-                </div>
-                <div class="task-metrics">
-                    <span class="task-time">2:50:00</span>
-                    <span class="task-cost">$84.90</span>
-                    <button class="continue-btn">Продолжить</button>
-                    <button class="delete-task-btn">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="task-item">
-            <input type="checkbox" class="task-checkbox">
-            <div class="task-info">
-                <div class="task-name-wrapper">
-                            <span class="task-group-icon" onclick="toggleGroup(this)">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M7 10l5 5 5-5z"></path>
-                                </svg>
-                            </span>
-                    <div>
-                        <div class="task-name">
-                            Code review
-                            <span class="task-group-count">2</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="task-meta">
-                    <span class="task-date">Сегодня, 11:00</span>
-                    <a href="#" class="project-badge">
-                        <span class="project-dot" style="background: #f39c12;"></span>
-                        <span>Backend API</span>
-                    </a>
-                </div>
-            </div>
-            <div class="task-metrics">
-                <span class="task-time">1:45:00</span>
-                <span class="task-cost">$52.50</span>
-                <button class="continue-btn">Продолжить</button>
-                <button class="delete-task-btn">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="task-item">
-            <input type="checkbox" class="task-checkbox">
-            <div class="task-info" style="margin-left: 0;">
-                <div class="task-name">Встреча с командой</div>
-                <div class="task-meta">
-                    <span class="task-date">Сегодня, 09:00</span>
-                    <a href="#" class="project-badge">
-                        <span class="project-dot" style="background: #9b59b6;"></span>
-                        <span>Менеджмент</span>
-                    </a>
-                </div>
-            </div>
-            <div class="task-metrics">
-                <span class="task-time">1:23:45</span>
-                <span class="task-cost">$41.75</span>
-                <button class="continue-btn">Продолжить</button>
-                <button class="delete-task-btn">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="task-item">
-            <input type="checkbox" class="task-checkbox">
-            <div class="task-info" style="margin-left: 0;">
-                <div class="task-name">Написание документации</div>
-                <div class="task-meta">
-                    <span class="task-date">Вчера, 16:20</span>
-                    <a href="#" class="project-badge">
-                        <span class="project-dot" style="background: #27ae60;"></span>
-                        <span>Open Source</span>
-                    </a>
-                </div>
-            </div>
-            <div class="task-metrics">
-                <span class="task-time">3:10:15</span>
-                <span class="task-cost">$95.25</span>
-                <button class="continue-btn">Продолжить</button>
-                <button class="delete-task-btn">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
+        <TaskItem v-for="(task, index) in history.getTasks()" :key="task.id" :task-id="task.id"/>
     </ContentBlock>
 </template>
 
-<script setup>
-import ContentBlock from "../molecules/ContentBlock.vue";
-</script>
-
-<style scoped>
+<style>
 .history-section {
     background: #fff;
     border-radius: 8px;
@@ -318,6 +138,7 @@ import ContentBlock from "../molecules/ContentBlock.vue";
     font-size: 11px;
     color: #666;
     margin-left: 8px;
+    cursor: pointer;
 }
 
 .task-info {
@@ -326,7 +147,7 @@ import ContentBlock from "../molecules/ContentBlock.vue";
 
 .task-name {
     font-size: 16px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     color: #2c3e50;
 }
 
@@ -358,7 +179,7 @@ import ContentBlock from "../molecules/ContentBlock.vue";
     background: #e9ecef;
 }
 
-.project-dot {
+.color-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -426,14 +247,13 @@ import ContentBlock from "../molecules/ContentBlock.vue";
 }
 
 .task-name-edit {
-    display: none;
     flex: 1;
 }
 
 .task-name-edit input {
     width: 100%;
     padding: 6px 10px;
-    border: 1px solid #1976d2;
+    border: 1px solid #e0e0e0;
     border-radius: 4px;
     font-size: 16px;
     outline: none;
@@ -507,14 +327,6 @@ import ContentBlock from "../molecules/ContentBlock.vue";
     height: 18px;
     fill: currentColor;
     transition: transform 0.2s ease;
-}
-
-.task-group-children {
-    display: none;
-}
-
-.task-group-children.visible {
-    display: block;
 }
 
 .task-group-child {

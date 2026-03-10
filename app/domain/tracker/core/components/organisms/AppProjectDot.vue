@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <span class="project-dot" :style="{
+    <span class="color-dot" :style="{
         background: props.color
     }"></span>
 </template>

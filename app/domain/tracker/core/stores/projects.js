@@ -11,11 +11,11 @@ export const useProjectsStore = defineStore('projects', () => {
                 {
                     id: 1,
                     name: 'ski',
-                    accentColor: '#1976d2',
+                    color: '#1976d2',
                 }, {
                     id: 2,
                     name: 'widget',
-                    accentColor: '#f39c12'
+                    color: '#f39c12'
                 }
             ];
         }

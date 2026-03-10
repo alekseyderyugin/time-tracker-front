@@ -6,19 +6,23 @@ export default function useTicker() {
     let ticker;
 
     return {
-        start(createdAt) {
+        start(startedAt) {
+
             if (ticker) {
                 return
             }
 
             now = Date.now()
-            seconds.value = ~~(now / 1000) - ~~(createdAt / 1000);
+            seconds.value = ~~(now / 1000) - ~~(startedAt / 1000);
             ticker = setInterval(() => seconds.value++, 1000)
         },
         stop() {
             clearInterval(ticker)
             seconds.value = 0
             ticker = null
+        },
+        isEnabled() {
+            return !!ticker
         },
         seconds
     }
